@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI 현황</title>
+  <style>
+    body {
+      width: 800px;
+      margin: 25px auto;
+      font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    }
+    rect {
+      fill: steelblue;
+      fill-opacity: 0.8;
+    }
+    rect:hover {
+      fill-opacity: 1;
+    }
+    .axis {
+      font-size: smaller;
+    }
+  </style>
+</head>
+<body>
+  <h1>AI 현황이 궁금한 당신들에게</h1>
+  <div>
+    <strong>Search_List: </strong>
+    <select name="filter" id="filter-dropdown" onchange="updateGraph()">
+      <option value="data2">2022 AI분야 고용지수 (point)</option>
+      <option value="data1">기업의 AI 활용성 (%)</option>
+      <option value="data3">2022 AI 스타트업 투자 금액 (10억 $)</option>
+      <option value="data4">AI 사고 및 논쟁 (건 수)</option>
+    </select>
+  </div>
+  <div id="graph-container"></div>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script>
+    // 여기에 JavaScript 코드를 붙여넣어주세요.
+    // JavaScript 코드 내용은 이전에 주셨던 코드를 그대로 복사해 넣어주시면 됩니다.
+    // (상단의 <script> 태그 안의 내용을 복사하여 붙여넣기 해주세요.)
+
+
+
+const margin = { top: 40, bottom: 10, left: 120, right: 20 };
+const width = 800 - margin.left - margin.right;
+const height = 600 - margin.top - margin.bottom;
+
+const svg = d3
+  .select("#graph-container")
+  .append("svg")
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom);
+
+const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+let data1 = [
+ 
+
+  {
+"temperature": 14,
+"location": {
+  "city": "예측 서비스",
+  "country": "US"
+}
+},
+ {
+"temperature": 15,
+"location": {
+  "city": "위험 모델링 및 분석",
+  "country": "N"
+}
+},
+ {
+"temperature": 16,
+"location": {
+  "city": "대면센터 자동화",
+  "country": "N"
+}
+},
+{
+"temperature": 16,
+"location": {
+  "city": "제품 특징 최적화" ,
+  "country": "JP"
+}
+},
+{
+"temperature": 17,
+"location": {
+  "city": "고객 유치 및 리드 생성",
+  "country": "JP"
+}
+},
+{
+"temperature": 19,
+"location": {
+  "city": "제품의 AI 기반 향상 ",
+  "country": "US"
+}
+},
+{
+"temperature": 19,
+"location": {
+  "city": "고객 서비스 분석",
+  "country": "N"
+}
+},
+
+{
+"temperature": 19,
+"location": {
+  "city": "고객층 세분화 ",
+  "country": "N"
+}
+},
+{
+"temperature": 20,
+"location": {
+  "city": "새로운 ai 기반 제품 개발 " ,
+  "country": "MX"
+}
+},
+{
+"temperature": 24,
+"location": {
+  "city": "서비스 운영 최적화" ,
+  "country": "KR"
+}
+}
+
+]
+
+
+let data2 = [
+  {
+    "temperature": 0.99,
+    "location": {
+      "city": "Singapore",
+      "country": "US"
+    }
+  },
+  
+  {
+"temperature": 0.99,
+"location": {
+"city": "Switzerland",
+"country": "N"
+}
+},
+{
+"temperature": 0.99,
+"location": {
+"city": "Canada",
+"country": "N"
+}
+},
+{
+"temperature": 1.01,
+"location": {
+"city": "Sweden",
+"country": "JP"
+}
+},
+{
+"temperature": 1.02,
+"location": {
+"city": "South Korea",
+"country": "US"
+}
+},
+{
+"temperature": 1.03,
+"location": {
+"city": "Netherlands",
+"country": "N"
+}
+},
+{
+"temperature": 1.05,
+"location": {
+"city": "Belgium",
+"country": "MX"
+}
+},
+{
+"temperature": 1.06,
+"location": {
+"city": "Denmark",
+"country": "KR"
+}
+},
+{
+"temperature": 1.06,
+"location": {
+"city": "New Zealand",
+"country": "CN"
+}
+},
+{
+"temperature": 1.13,
+"location": {
+"city": "South Africa",
+"country": "GB"
+}
+},
+{
+"temperature": 1.15,
+"location": {
+"city": "UAE",
+"country": "KR"
+}
+},
+{
+"temperature": 1.18,
+"location": {
+"city": "UK",
+"country": "CN"
+}
+},
+{
+"temperature": 1.18,
+"location": {
+"city": "Italy",
+"country": "KR"
+}
+},
+{
+"temperature": 1.19,
+"location": {
+"city": "Spain",
+"country": "CN"
+}
+},
+{
+"temperature": 1.37,
+"location": {
+"city": "Hong Kong",
+"country": "US"
+}
+}
+];
+
+let data3=[
+
+{
+    "temperature": 858,
+    "location": {
+      "city": "2013",
+      "country": "US"
+    }
+  },
+  
+  {
+"temperature": 1038,
+"location": {
+"city": "2014",
+"country": "N"
+}
+},
+{
+"temperature": 1372,
+"location": {
+"city": "2015",
+"country": "N"
+}
+},
+{
+"temperature": 1941,
+"location": {
+"city": "2016",
+"country": "JP"
+}
+},
+{
+"temperature": 2514,
+"location": {
+"city": "2017",
+"country": "US"
+}
+},
+{
+"temperature": 2725,
+"location": {
+"city": "2018",
+"country": "N"
+}
+},
+{
+"temperature": 2891,
+"location": {
+"city": "2019",
+"country": "MX"
+}
+},
+{
+"temperature": 4020,
+"location": {
+"city": "2020",
+"country": "KR"
+}
+},
+{
+"temperature": 3538,
+"location": {
+"city": "2021",
+"country": "CN"
+}
+}
+
+
+];
+  
+
+let data4=[ { "temperature": 15, "location": { "city": "2012", "country": "US" } }, { "temperature": 13, "location": { "city": "2013", "country": "N" } }, { "temperature": 19, "location": { "city": "2014", "country": "N" } }, { "temperature": 23, "location": { "city": "2015", "country": "JP" } }, { "temperature": 51, "location": { "city": "2016", "country": "US" } }, { "temperature": 80, "location": { "city": "2017", "country": "N" } }, { "temperature": 94, "location": { "city": "2018", "country": "MX" } }, { "temperature": 141, "location": { "city": "2019", "country": "KR" } }, { "temperature": 233, "location": { "city": "2020", "country": "CN" } }, { "temperature": 260, "location": { "city": "2021", "country": "CN" } } ];
+
+
+const xscale = d3.scaleLinear().range([0, width]);
+const yscale = d3.scaleBand().rangeRound([0, height]).paddingInner(0.1);
+
+const xaxis = d3.axisTop().scale(xscale);
+const g_xaxis = g.append("g").attr("class", "x axis");
+const yaxis = d3.axisLeft().scale(yscale);
+const g_yaxis = g.append("g").attr("class", "y axis");
+
+function update(new_data) {
+  xscale.domain([0, d3.max(new_data, (d) => d.temperature)]);
+  yscale.domain(new_data.map((d) => d.location.city));
+
+  g_xaxis.transition().call(xaxis);
+  g_yaxis.transition().call(yaxis);
+
+  const rect = g
+    .selectAll("rect")
+    .data(new_data, (d) => d.location.city)
+    .join(
+      (enter) => {
+        const rect_enter = enter.append("rect").attr("x", 0);
+        rect_enter.append("title");
+        return rect_enter;
+      },
+      (update) => update,
+      (exit) => exit.remove()
+    );
+
+  rect
+    .transition()
+    .attr("height", yscale.bandwidth())
+    .attr("width", (d) => xscale(d.temperature))
+    .attr("y", (d) => yscale(d.location.city));
+
+  rect.select("title").text((d) => d.location.city);
+}
+
+
+
+function updateGraph() {
+  const selectedDataset = document.getElementById("filter-dropdown").value;
+  
+  if (selectedDataset === "data1") {
+    update(data1);
+  } else if (selectedDataset === "data2") {
+    update(data2);
+  } else if(selectedDataset ==="data3"){
+    update(data3);
+  } else if(selectedDataset ==="data4"){
+    update(data4);
+  }
+}
+
+
+  </script>
+</body>
+</html>
